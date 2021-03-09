@@ -6,7 +6,7 @@ exports.connectDB = () =>{
     mongoose.connect(url, {
         useNewUrlParser: true,
         useCreateIndex: true,
-        useUnifiedTopology: true
+        useUnifiedTopology: true,
     })
     .then(() => {
         console.log("Successfully connect to database");
