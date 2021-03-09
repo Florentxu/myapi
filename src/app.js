@@ -1,6 +1,6 @@
 
-const app = require('./src/services/express.service');
-const mongoose = require('./src/services/mongodb.service');
+const app = require('./services/express.service');
+const mongoose = require('./services/mongodb.service');
 mongoose.connectDB();
 app.start();
 

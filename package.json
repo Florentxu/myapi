@@ -4,10 +4,10 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "start": "npm run build && node ./build/app.js",
+    "start": "npm run build && node ./build/app.js ",
     "dev": "nodemon --exec babel-node ./src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "babel -d ./build/ ./src/"
+    "build": "babel -d ./build ./src"
   },
   "author": "Florent XU",
   "license": "ISC",
