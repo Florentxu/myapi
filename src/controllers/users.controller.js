@@ -9,7 +9,48 @@ exports.create = (req, res) => {
     const user = new User({
         firstName: req.body.firstName,
         lastName: req.body.lastName,
+        tel: req.body.tel,
         email: req.body.email,
+        isAdmin: req.body.isAdmin,
+        address: req.body.address,
+        password: hashedPassword,
+    });
+
+    user.save()
+        .then((data) => {
+            let userToken = jwt.sign(
+                {
+                    id: data._id,
+                },
+                "supersecret",
+                {
+                    expiresIn: 86400,
+                }
+            );
+            res.send({
+                token: userToken,
+                auth: true,
+            });
+        })
+        .catch((err) => {
+            console.log(err.message);
+            res.status(500).send({
+                error: 500,
+                message: err.message || "Une erreur c'est produite lors de la création",
+            });
+        });
+};
+
+exports.createAdmin = (req, res) => {
+
+    let hashedPassword = bcrypt.hashSync(req.body.password, 10);
+    const user = new User({
+        firstName: req.body.firstName,
+        lastName: req.body.lastName,
+        tel: req.body.tel,
+        email: req.body.email,
+        address: req.body.address,
+        isAdmin: req.body.isAdmin,
         password: hashedPassword,
     });
 
@@ -38,6 +79,8 @@ exports.create = (req, res) => {
             });
         });
 };
+
+
 // id brut :602aa71155607397f07d5a3d
 exports.find = (req, res) => {
     User.findById(req.params.id)

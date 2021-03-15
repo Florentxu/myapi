@@ -12,6 +12,9 @@ const userSchema = new Schema({
         required: true,
         lowercase: true
     },
+    tel:{
+        type: Number,
+    },
     email: {
         type: String,
         required: true,
@@ -24,8 +27,17 @@ const userSchema = new Schema({
         // maxlength: 50,
         unique: true
     },
+    isAdmin: {
+        type: Boolean,
+        default: false,
+        required: true,
+    },
+    address:{
+        type: String
+    },
     orders:[{
-        type: Schema.ObjectId, ref:'Order'
+        type: Schema.ObjectId, 
+        ref:'Order'
     }]
 })
 
