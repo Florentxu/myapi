@@ -1,4 +1,3 @@
-
 const stripe = require('stripe')('sk_test_51IYBDvDclEfXj97s9pha3d6w3njB4lUcHwcrwSDTmlJORHRIENeP2A44xCdL2b3hWuLZLNMQAfyornaxdblJdL77000u2EGqoy')
 
 exports.checkout = async (req, res) => {
@@ -17,8 +16,8 @@ exports.checkout = async (req, res) => {
       },
     ],
     mode: 'payment',
-    success_url: 'https://localhost:8080/success',
-    cancel_url: 'https://localhost:8080/cancel',
+    success_url: `${process.env.VUE}/success`,
+    cancel_url: `${process.env.VUE}/cancel`,
   });
   console.log(res)
   res.json({ id: session.id });
