@@ -12,7 +12,12 @@ exports.create = (req, res) => {
         tel: req.body.tel,
         email: req.body.email,
         isAdmin: req.body.isAdmin,
-        address: req.body.address,
+        address: {
+            street: req.body.address.street,
+            city: req.body.address.city,
+            ccode: req.body.address.ccode,
+            country: req.body.address.country,
+        },
         password: hashedPassword,
     });
 
@@ -49,7 +54,12 @@ exports.createAdmin = (req, res) => {
         lastName: req.body.lastName,
         tel: req.body.tel,
         email: req.body.email,
-        address: req.body.address,
+        address: {
+            street: req.body.address.street,
+            city: req.body.address.city,
+            ccode: req.body.address.ccode,
+            country: req.body.address.country,
+        },
         isAdmin: req.body.isAdmin,
         password: hashedPassword,
     });
@@ -79,6 +89,45 @@ exports.createAdmin = (req, res) => {
             });
         });
 };
+
+exports.update = (req, res) => {
+    User.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            tel: req.body.tel,
+            address: {
+                street: req.body.address.street,
+                city: req.body.address.city,
+                ccode: req.body.address.ccode,
+                country: req.body.address.country,
+            },
+        }
+    )
+    .then((data) => {
+        res.json({
+            message :" utilisateur modifier",
+            data: data
+        });
+    }).catch((err) => {
+        console.log(err.message);
+    })
+}
+
+exports.delete = (req, res) => {
+    User.deleteOne(
+        { _id: req.params.id }
+    )
+    .then((data) => {
+        res.json({
+            message :" utilisateur supprimer",
+            _id: req.params.id 
+        });
+    }).catch((err) => {
+        console.log(err.message);
+    })
+}
 
 
 // id brut :602aa71155607397f07d5a3d

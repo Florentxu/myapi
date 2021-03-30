@@ -26,21 +26,56 @@ exports.create = (req, res) => {
         });
 };
 
-exports.find = (req, res) => {
-    Product.find()
+exports.update = (req, res) => {
+    Product.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+            price: req.body.price,
+            title: req.body.title,
+            description: req.body.description,
+            category: req.body.category,
+            img: req.body.img,
+        }
+    )
     .then((data) => {
-        res.json(data);
+        res.json({
+            message :" produit modifier",
+            data: data
+        });
     }).catch((err) => {
         console.log(err.message);
     })
-};
+}
 
-exports.findOne = (req , res) => {
-    Product.findById(req.params.id)
-    .then((data) =>{
-        res.json(data);
-    })
-    .catch((err) => {
+exports.delete = (req, res) => {
+    Product.deleteOne(
+        { _id: req.params.id }
+    )
+    .then((data) => {
+        res.json({
+            message :" produit supprimer",
+            _id: req.params.id 
+        });
+    }).catch((err) => {
         console.log(err.message);
     })
+}
+
+exports.find = (req, res) => {
+    Product.find()
+        .then((data) => {
+            res.json(data);
+        }).catch((err) => {
+            console.log(err.message);
+        })
+};
+
+exports.findOne = (req, res) => {
+    Product.findById(req.params.id)
+        .then((data) => {
+            res.json(data);
+        })
+        .catch((err) => {
+            console.log(err.message);
+        })
 }

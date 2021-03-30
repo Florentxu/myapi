@@ -34,7 +34,18 @@ const userSchema = new Schema({
         required: true,
     },
     address:{
-        type: String
+        street :{
+            type:String
+        },
+        ccode :{
+            type:String
+        },
+        city : {
+            type:String
+        },
+        country: {
+            type:String
+        }
     },
     orders:[{
         type: Schema.ObjectId, 
