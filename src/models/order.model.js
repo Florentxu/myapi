@@ -15,7 +15,8 @@ const orderSchema = new Schema({
         ref: 'User'
     },
     status:{
-        type: String
+        type: String,
+        default: "En cours"
     }
 
 })

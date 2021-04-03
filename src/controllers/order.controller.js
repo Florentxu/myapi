@@ -10,7 +10,7 @@ exports.createOrder = (req, res) => {
     order
         .save()
         .then((data) => {
-            User.findByIdAndUpdate(res.body.user,{orders: data._id}).then(() => {res.send({
+            Order.findByIdAndUpdate(req.body.user,{orders: data._id}).then(() => {res.send({
                 order: data,
                 confirmed: true,
             });
