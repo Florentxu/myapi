@@ -1,4 +1,5 @@
 const Order = require("../models/order.model");
+const User = require("../models/user.model")
 
 exports.createOrder = (req, res) => {
     const order = new Order({
@@ -10,10 +11,13 @@ exports.createOrder = (req, res) => {
     order
         .save()
         .then((data) => {
-            Order.findByIdAndUpdate(req.body.user,{orders: data._id}).then(() => {res.send({
+            User.findByIdAndUpdate(req.body.user,{orders: data._id})
+            .then(() => {
+                res.send({
                 order: data,
                 confirmed: true,
-            });
+            })
+            .catch((err) => res.send(err));
         })
     })
     .catch((err) => {
