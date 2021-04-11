@@ -13,7 +13,15 @@ exports.create = function (req, res) {
   var user = new User({
     firstName: req.body.firstName,
     lastName: req.body.lastName,
+    tel: req.body.tel,
     email: req.body.email,
+    isAdmin: req.body.isAdmin,
+    address: {
+      street: req.body.address.street,
+      city: req.body.address.city,
+      ccode: req.body.address.ccode,
+      country: req.body.address.country
+    },
     password: hashedPassword
   });
   user.save().then(function (data) {
@@ -33,32 +41,84 @@ exports.create = function (req, res) {
       message: err.message || "Une erreur c'est produite lors de la création"
     });
   });
-}; // id brut :602aa71155607397f07d5a3d
+};
 
+exports.update = function (req, res) {
+  User.findOneAndUpdate({
+    _id: req.params.id
+  }, {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    tel: req.body.tel,
+    address: {
+      street: req.body.address.street,
+      city: req.body.address.city,
+      ccode: req.body.address.ccode,
+      country: req.body.address.country
+    }
+  }).then(function (data) {
+    res.json({
+      message: " utilisateur modifier",
+      data: data
+    });
+  })["catch"](function (err) {
+    console.log(err.message);
+  });
+};
+
+exports.adminUpdate = function (req, res) {
+  User.findOneAndUpdate({
+    _id: req.params.id
+  }, {
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    email: req.body.email,
+    tel: req.body.tel,
+    address: {
+      street: req.body.address.street,
+      city: req.body.address.city,
+      ccode: req.body.address.ccode,
+      country: req.body.address.country
+    },
+    isAdmin: req.body.isAdmin
+  }).then(function (data) {
+    res.json({
+      message: " utilisateur modifier",
+      data: data
+    });
+  })["catch"](function (err) {
+    console.log(err.message);
+  });
+};
+
+exports["delete"] = function (req, res) {
+  User.deleteOne({
+    _id: req.params.id
+  }).then(function (data) {
+    res.json({
+      message: " utilisateur supprimer",
+      _id: req.params.id
+    });
+  })["catch"](function (err) {
+    console.log(err.message);
+  });
+};
 
 exports.find = function (req, res) {
+  User.find().populate('orders').then(function (data) {
+    res.json(data);
+  })["catch"](function (err) {
+    console.log(err.message);
+  });
+};
+
+exports.findOne = function (req, res) {
   User.findById(req.params.id).populate('orders').then(function (data) {
     if (!data) {
       res.status(404).send({
         message: "User with id ".concat(req.params.id, " not found")
       });
-    } // let headerToken = req.headers.authorization;
-    // if (!headerToken){
-    //     res.status(401).send({
-    //         auth: false,
-    //         message: "missing token",
-    //         token: null
-    //     });
-    // }
-    // let tokenVerify = jwt.verify(token, "supersecret")
-    // if (!tokenVerify){
-    //     res.status(401).send({
-    //         auth:false,
-    //         token: null,
-    //         message: "no authorized"
-    //     })
-    // }
-
+    }
 
     res.json(data);
   })["catch"](function (err) {

@@ -9,7 +9,7 @@ exports.createOrder = function (req, res) {
     products: req.body.products
   });
   order.save().then(function (data) {
-    User.findByIdAndUpdate(res.body.user, {
+    Order.findByIdAndUpdate(req.body.user, {
       orders: data._id
     }).then(function () {
       res.send({
@@ -23,6 +23,21 @@ exports.createOrder = function (req, res) {
       error: 500,
       message: err.message || "Une erreur c'est produite lors de la création"
     });
+  });
+};
+
+exports.update = function (req, res) {
+  Order.findOneAndUpdate({
+    _id: req.params.id
+  }, {
+    status: req.body.status
+  }).then(function (data) {
+    res.json({
+      message: "commande modifié",
+      data: data
+    });
+  })["catch"](function (err) {
+    console.log(err.message);
   });
 };
 

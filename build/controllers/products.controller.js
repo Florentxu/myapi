@@ -7,6 +7,7 @@ exports.create = function (req, res) {
     price: req.body.price,
     title: req.body.title,
     description: req.body.description,
+    category: req.body.category,
     img: req.body.img
   });
   product.save().then(function (data) {
@@ -23,8 +24,40 @@ exports.create = function (req, res) {
   });
 };
 
+exports.update = function (req, res) {
+  Product.findOneAndUpdate({
+    _id: req.params.id
+  }, {
+    price: req.body.price,
+    title: req.body.title,
+    description: req.body.description,
+    category: req.body.category,
+    img: req.body.img
+  }).then(function (data) {
+    res.json({
+      message: " produit modifié",
+      data: data
+    });
+  })["catch"](function (err) {
+    console.log(err.message);
+  });
+};
+
+exports["delete"] = function (req, res) {
+  Product.deleteOne({
+    _id: req.params.id
+  }).then(function (data) {
+    res.json({
+      message: " produit supprimer",
+      _id: req.params.id
+    });
+  })["catch"](function (err) {
+    console.log(err.message);
+  });
+};
+
 exports.find = function (req, res) {
-  Product.find().then(function (data) {
+  Product.find().populate('category').then(function (data) {
     res.json(data);
   })["catch"](function (err) {
     console.log(err.message);
@@ -32,7 +65,7 @@ exports.find = function (req, res) {
 };
 
 exports.findOne = function (req, res) {
-  Product.findById(req.params.id).then(function (data) {
+  Product.findById(req.params.id).populate('category').then(function (data) {
     res.json(data);
   })["catch"](function (err) {
     console.log(err.message);

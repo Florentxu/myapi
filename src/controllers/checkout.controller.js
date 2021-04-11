@@ -8,7 +8,7 @@ exports.checkout = async (req, res) => {
         price_data: {
           currency: 'eur',
           product_data: {
-            name: 'T-shirt',
+            name: 'Cart',
           },
           unit_amount: req.body.amount,
         },
