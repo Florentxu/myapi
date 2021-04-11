@@ -39,7 +39,7 @@ exports.update = (req, res) => {
     )
     .then((data) => {
         res.json({
-            message :" produit modifier",
+            message :" produit modifié",
             data: data
         });
     }).catch((err) => {
@@ -63,6 +63,7 @@ exports.delete = (req, res) => {
 
 exports.find = (req, res) => {
     Product.find()
+    .populate('category')
         .then((data) => {
             res.json(data);
         }).catch((err) => {
@@ -72,6 +73,7 @@ exports.find = (req, res) => {
 
 exports.findOne = (req, res) => {
     Product.findById(req.params.id)
+    .populate('category')
         .then((data) => {
             res.json(data);
         })

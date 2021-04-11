@@ -21,6 +21,23 @@ exports.create = (req, res) => {
     })
 }
 
+exports.update = (req, res) => {
+    Category.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+            title: req.body.title,
+        }
+    )
+    .then((data) => {
+        res.json({
+            message :" categorie modifié",
+            data: data
+        });
+    }).catch((err) => {
+        console.log(err.message);
+    })
+}
+
 exports.find = (req, res) => {
     Category.find()
     .then((data) => {

@@ -17,7 +17,7 @@ exports.checkout = async (req, res) => {
     ],
     mode: 'payment',
     success_url: `${process.env.VUE}/success`,
-    cancel_url: `${process.env.VUE}/cancel`,
+    cancel_url: `${process.env.VUE}/cart`,
   });
   console.log(res)
   res.json({ id: session.id });

@@ -25,6 +25,23 @@ exports.createOrder = (req, res) => {
     });
 }
 
+exports.update = (req, res) => {
+    Order.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+            status: req.body.status,
+        }
+    )
+    .then((data) => {
+        res.json({
+            message :"commande modifié",
+            data: data
+        });
+    }).catch((err) => {
+        console.log(err.message);
+    })
+}
+
 exports.getOrder = (req, res) => {
     Order.findById(req.params.id)
     .populate('user')

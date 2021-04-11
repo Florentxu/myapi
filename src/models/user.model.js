@@ -6,12 +6,10 @@ const userSchema = new Schema({
     lastName: {
         type: String,
         required: true,
-        lowercase: true
     },
     firstName: {
         type: String,
         required: true,
-        lowercase: true
     },
     tel:{
         type: String,
@@ -25,7 +23,6 @@ const userSchema = new Schema({
         type: String,
         required: true,
         minlength: 4,
-        // maxlength: 50,
         unique: true
     },
     isAdmin: {

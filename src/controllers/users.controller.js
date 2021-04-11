@@ -46,50 +46,6 @@ exports.create = (req, res) => {
         });
 };
 
-exports.createAdmin = (req, res) => {
-
-    let hashedPassword = bcrypt.hashSync(req.body.password, 10);
-    const user = new User({
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-        tel: req.body.tel,
-        email: req.body.email,
-        address: {
-            street: req.body.address.street,
-            city: req.body.address.city,
-            ccode: req.body.address.ccode,
-            country: req.body.address.country,
-        },
-        isAdmin: req.body.isAdmin,
-        password: hashedPassword,
-    });
-
-    user
-        .save()
-        .then((data) => {
-            let userToken = jwt.sign(
-                {
-                    id: data._id,
-                },
-                "supersecret",
-                {
-                    expiresIn: 86400,
-                }
-            );
-            res.send({
-                token: userToken,
-                auth: true,
-            });
-        })
-        .catch((err) => {
-            console.log(err.message);
-            res.status(500).send({
-                error: 500,
-                message: err.message || "Une erreur c'est produite lors de la création",
-            });
-        });
-};
-
 exports.update = (req, res) => {
     User.findOneAndUpdate(
         { _id: req.params.id },
@@ -103,6 +59,33 @@ exports.update = (req, res) => {
                 ccode: req.body.address.ccode,
                 country: req.body.address.country,
             },
+        }
+        )
+    .then((data) => {
+        res.json({
+            message :" utilisateur modifier",
+            data: data
+        });
+    }).catch((err) => {
+        console.log(err.message);
+    })
+}
+
+exports.adminUpdate = (req, res) => {
+    User.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            email: req.body.email,            
+            tel: req.body.tel,
+            address: {
+                street: req.body.address.street,
+                city: req.body.address.city,
+                ccode: req.body.address.ccode,
+                country: req.body.address.country,
+            },
+            isAdmin: req.body.isAdmin,
         }
     )
     .then((data) => {
@@ -129,9 +112,17 @@ exports.delete = (req, res) => {
     })
 }
 
-
-// id brut :602aa71155607397f07d5a3d
 exports.find = (req, res) => {
+    User.find()
+    .populate('orders')
+        .then((data) => {
+            res.json(data);
+        }).catch((err) => {
+            console.log(err.message);
+        })
+};
+
+exports.findOne = (req, res) => {
     User.findById(req.params.id)
     .populate('orders')
         .then((data) => {
@@ -140,22 +131,6 @@ exports.find = (req, res) => {
                     message: `User with id ${req.params.id} not found`,
                 });
             }
-            // let headerToken = req.headers.authorization;
-            // if (!headerToken){
-            //     res.status(401).send({
-            //         auth: false,
-            //         message: "missing token",
-            //         token: null
-            //     });
-            // }
-            // let tokenVerify = jwt.verify(token, "supersecret")
-            // if (!tokenVerify){
-            //     res.status(401).send({
-            //         auth:false,
-            //         token: null,
-            //         message: "no authorized"
-            //     })
-            // }
             res.json(data);
         })
         .catch((err) => {
